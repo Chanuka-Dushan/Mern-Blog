@@ -7,6 +7,8 @@ import authRoutes from "./routes/auth.route.js";
 const app = express();
 app.use(express.json());
 
+
+
 dotenv.config();
 
 mongoose
@@ -26,3 +28,13 @@ app.listen(3000, () => {
 
 app.use('/api/user',userRoute)
 app.use('/api/auth',authRoutes)
+
+app.use((err,req,res,next)=>{
+  const statuscode=err.statuscode || 500;
+  const message=err.message || 'Something went wrong';
+  res.status(statuscode).json({
+    success:false,
+    statuscode,
+    message
+  })
+});
